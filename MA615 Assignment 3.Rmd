@@ -1,6 +1,6 @@
 ---
 title: "MA615 Assignment 3"
-author: "Andrew Zhang"
+author: "Andrew Zhang, Ningze Zu"
 date: "9/30/2018"
 output: pdf_document
 ---
@@ -69,3 +69,53 @@ ggplot(ball_2010, aes(Age, MP)) + geom_point() +
 ggplot(ball_2003, aes(Age, MP)) + geom_point() +
   geom_smooth(method = "lm")
 ```
+
+```{r}
+View(season_ball)
+```
+
+
+```{r}
+#Players' age over 25
+ball1 <- filter(season_ball, !is.na(Age) & Age >= 25)
+ball1
+
+ball2 <- select(ball1, Year, Player, Tm, Age, Pos, G, PTS)
+ball2
+
+arrange(ball2, desc(PTS))
+
+ggplot(ball2, aes(Age, PTS)) + geom_point() +
+  geom_smooth(method = "lm")
+
+#2008 Season
+b1 <- filter(season_ball, Year==2008)
+b2 <- select(b1, Year, Player, Tm, Age, Pos, G, X3P, X2P, PTS) 
+b2
+
+b2 %>%
+  arrange(desc(PTS)) %>%
+  summarise(total = n(), min.PTS = min(PTS), average.PTS = mean(PTS), max.PTS = max(PTS))
+
+b2 %>%
+  arrange(desc(X3P)) %>%
+  summarise(total = n(), min.X3P = min(X3P), average.X3P = mean(X3P), max.X3P = max(X3P))
+
+b2 %>%
+  arrange(desc(X2P)) %>%
+  summarise(total = n(), min.X2P = min(X2P), average.X2P = mean(X2P), max.X2P = max(X2P))
+  
+b2 %>%
+  group_by(Tm) %>%
+  summarise(N = n(), avg_PTS = mean(PTS, na.rm=TRUE)) 
+
+ggplot(b2, aes(G,PTS)) + geom_point() + 
+  geom_smooth(method = "lm")
+
+ggplot(b2, aes(X3P,PTS)) + geom_point() + 
+  geom_smooth(method = "lm")
+
+ggplot(b2, aes(X2P,PTS)) + geom_point() + 
+  geom_smooth(method = "lm")
+```
+
