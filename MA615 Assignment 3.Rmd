@@ -1,6 +1,6 @@
 ---
 title: "MA615 Assignment 3"
-author: "Andrew Zhang, Ningze Zu, Albert Ding"
+author: "Andrew Zhang, Ningze Zu, Albert Ding, Jiahao Xu"
 date: "9/30/2018"
 output: pdf_document
 ---
@@ -159,5 +159,25 @@ ggplot(b2, aes(X3P,PTS)) + geom_point() +
 
 ggplot(b2, aes(X2P,PTS)) + geom_point() + 
   geom_smooth(method = "lm")
+```
+
+```{r, Jiahao}
+library(stringr)
+season_ball <- read.csv("Seasons_Stats.csv")
+
+# data in Season 2009 with players' age over 20 and made points are not zero
+ball_2009_20 <- filter(season_ball,Age>20 & Year==2009 & !is.na(PTS))
+ball1111 <- filter(ball_2009_20, !(str_detect(string = ball_2009_20 $Tm,pattern = "TOT"))) %>% group_by(Player) %>% 
+  select(Year, Player, Pos, PER,Age, Tm, G,X3P, X2P, PTS ) %>%
+  mutate(Average_PTS=PTS/G)  %>%
+  arrange(desc(Average_PTS))
+ball1111
+
+# We want to figure out the relationship between Age and Average_PTS
+ggplot(ball1111)+geom_point(mapping = aes(x=Age, y=Average_PTS))+geom_smooth(mapping = aes(x=Age, y=Average_PTS)) +ggtitle("Jiahao Xu's plot")
+# We want to figure out the relationship between PER and Average_PTS, which is the scoring efficiency
+ggplot(ball1111)+geom_point(mapping = aes(x=PER, y=Average_PTS))+geom_smooth(mapping = aes(x=PER, y=Average_PTS)) +ggtitle("Jiahao Xu's plot")
+# We want to figure out the relationship between 2 points made and PER
+ggplot(ball1111)+geom_point(mapping = aes(x=X2P, y=PER))+geom_smooth(mapping = aes(x=X2P, y=PER)) +ggtitle("Jiahao Xu's plot")
 ```
 
