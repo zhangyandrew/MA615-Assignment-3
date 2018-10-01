@@ -1,6 +1,6 @@
 ---
 title: "MA615 Assignment 3"
-author: "Andrew Zhang, Ningze Zu"
+author: "Andrew Zhang, Ningze Zu, Albert Ding"
 date: "9/30/2018"
 output: pdf_document
 ---
@@ -70,8 +70,50 @@ ggplot(ball_2003, aes(Age, MP)) + geom_point() +
   geom_smooth(method = "lm")
 ```
 
-```{r}
-View(season_ball)
+```{r, Albert}
+library(dplyr)
+library(ggplot2)
+season_ball <- read.csv("Seasons_Stats.csv")
+season_ball$blank2 <- NULL
+season_ball$blanl <- NULL
+season_ball <- na.omit(season_ball)
+
+## Here, we will examine the trend of points per season between free throws and field goals. 
+
+##Comparing different years of basketball will help us understand how offenses evolved in terms of scoring.  
+
+##We have filtered only for years after 1980 because that was the year in which three pointers were first installed into the league, which we think may have affected the balance of offense. 
+
+##Years after 1980:
+threepointera <- season_ball %>% filter(Year >= 1980)
+
+
+##Looking at overall field goal trends:
+threepointera %>% arrange(desc(Year))
+
+threepointera %>% group_by(Year) %>% summarize(sum(FG))
+
+ggplot(threepointera, aes(Year, FG)) + geom_point() +
+  geom_smooth(method = "lm")
+
+##Looking at free throw trends:
+threepointera %>% arrange(desc(Year))
+
+threepointera %>% group_by(Year) %>% summarize(sum(FT))
+
+ggplot(threepointera, aes(Year,FT)) + geom_point() +
+  geom_smooth(method = "lm")
+
+##Looking at field goal trends:
+threepointera %>% arrange(desc(Year))
+
+threepointera %>% group_by(Year) %>% summarize(sum(FG))
+
+ggplot(threepointera, aes(Year,FG)) + geom_point() +
+  geom_smooth(method = "lm")
+
+
+
 ```
 
 
