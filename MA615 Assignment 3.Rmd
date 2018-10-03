@@ -9,8 +9,6 @@ https://www.kaggle.com/drgilermo/nba-players-stats#Seasons_Stats.csv
 
 There is a schema for each of the variables available in the link above.
 
-Also put your name as an author above.
-
 ```{r, Andrew}
 library(dplyr)
 library(ggplot2)
@@ -29,7 +27,8 @@ ball_2017 %>% arrange(desc(X3P))
 ball_2017 %>% arrange(desc(WS))
 
 ggplot(ball_2017, aes(X3P, WS)) + geom_point() +
-  geom_smooth(method = "lm")
+  geom_smooth(method = "lm") + 
+  ggtitle("2017 3 Pointers vs. Win Shares")
 
 ## 2010 Season
 ball_2010 <- season_ball %>% filter(Year == 2010)
@@ -38,7 +37,8 @@ ball_2010 %>% arrange(desc(X3P))
 ball_2010 %>% arrange(desc(WS))
 
 ggplot(ball_2010, aes(X3P, WS)) + geom_point() +
-  geom_smooth(method = "lm")
+  geom_smooth(method = "lm") +
+  ggtitle("2010 3 Pointers vs. Win Shares")
 
 ## 2003 Season
 ball_2003 <- season_ball %>% filter(Year == 2003)
@@ -47,7 +47,8 @@ ball_2003 %>% arrange(desc(X3P))
 ball_2003 %>% arrange(desc(WS))
 
 ggplot(ball_2003, aes(X3P, WS)) + geom_point() +
-  geom_smooth(method = "lm")
+  geom_smooth(method = "lm") + 
+  ggtitle("2003 3 Pointers vs. Win Shares")
 
 ## Look at the number of 3 pointers made per team
 ## Notice the top teams from 2017 have some of the highest number of 3 pointers made
@@ -55,7 +56,9 @@ ggplot(ball_2003, aes(X3P, WS)) + geom_point() +
 ball_2017 %>% group_by(Tm) %>% summarize(sum(X3P))
 ```
 
-We can see a more positive trend for the 2017 data. This can possibly indicate more of a correlation between number of threes made and how well a team might do.
+We can see a more positive trend for the 2017 data. This can possibly indicate more of a correlation between number of threes made and how well a team might do. 
+
+In terms of 3 pointers vs win shares, it's hard to determine whether or not how well a team does is based on the number of 3 pointers a player might make. Although it seems like all players shoot 3 pointers in todays game, we need to explore this interaction further. 
 
 ```{r, age}
 ball_2017 %>% arrange(desc(Age))
@@ -111,9 +114,6 @@ threepointera %>% group_by(Year) %>% summarize(sum(FG))
 
 ggplot(threepointera, aes(Year,FG)) + geom_point() +
   geom_smooth(method = "lm")
-
-
-
 ```
 
 
@@ -181,3 +181,4 @@ ggplot(ball1111)+geom_point(mapping = aes(x=PER, y=Average_PTS))+geom_smooth(map
 ggplot(ball1111)+geom_point(mapping = aes(x=X2P, y=PER))+geom_smooth(mapping = aes(x=X2P, y=PER)) +ggtitle("Jiahao Xu's plot")
 ```
 
+Conclusion
