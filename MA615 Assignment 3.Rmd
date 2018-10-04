@@ -163,22 +163,29 @@ ggplot(b2, aes(X2P,PTS)) + geom_point() +
 
 ```{r, Jiahao}
 library(stringr)
+library(dplyr)
+library(ggplot2)
 season_ball <- read.csv("Seasons_Stats.csv")
 
 # data in Season 2009 with players' age over 20 and made points are not zero
 ball_2009_20 <- filter(season_ball,Age>20 & Year==2009 & !is.na(PTS))
+# here I want to put data of the player who played in more than one team in season 2009 together. And then I select Year, Player, Pos, PER, Age, Tm, G,X3P, X2P, PTS to do the data visualiztion.
 ball1111 <- filter(ball_2009_20, !(str_detect(string = ball_2009_20 $Tm,pattern = "TOT"))) %>% group_by(Player) %>% 
-  select(Year, Player, Pos, PER,Age, Tm, G,X3P, X2P, PTS ) %>%
+  select(Year, Player, Pos, PER, Age, Tm, G,X3P, X2P, PTS ) %>%
   mutate(Average_PTS=PTS/G)  %>%
   arrange(desc(Average_PTS))
-ball1111
+#ball1111
 
 # We want to figure out the relationship between Age and Average_PTS
-ggplot(ball1111)+geom_point(mapping = aes(x=Age, y=Average_PTS))+geom_smooth(mapping = aes(x=Age, y=Average_PTS)) +ggtitle("Jiahao Xu's plot")
-# We want to figure out the relationship between PER and Average_PTS, which is the scoring efficiency
-ggplot(ball1111)+geom_point(mapping = aes(x=PER, y=Average_PTS))+geom_smooth(mapping = aes(x=PER, y=Average_PTS)) +ggtitle("Jiahao Xu's plot")
-# We want to figure out the relationship between 2 points made and PER
-ggplot(ball1111)+geom_point(mapping = aes(x=X2P, y=PER))+geom_smooth(mapping = aes(x=X2P, y=PER)) +ggtitle("Jiahao Xu's plot")
+ggplot(ball1111)+geom_point(mapping = aes(x=Age, y=Average_PTS))+geom_smooth(mapping = aes(x=Age, y=Average_PTS)) +ggtitle("Jiahao Xu's plot:the relationship between Age and Average_PTS in 2009")
+
+## We want to figure out the relationship between Average_PTS and PER value, which is the scoring efficiency
+ggplot(ball1111)+geom_point(mapping = aes(x=PER, y=Average_PTS))+geom_smooth(mapping = aes(x=PER, y=Average_PTS)) +ggtitle("Jiahao Xu's plot:the relationship between PER and Average_PTS in 2009")
+## We want to figure out the relationship between 2 points made and PER. We need to filter the data that X2P bigger than 50 to let the plot make more sense.
+ball2222<-filter(ball1111,X2P>50)
+ggplot(ball2222)+geom_point(mapping = aes(x=X2P, y=PER))+geom_smooth(mapping = aes(x=X2P, y=PER)) +ggtitle("Jiahao Xu's plot: the relationship between 2 points made and PER in 2009")
+
+## Conclusion: According to the first plot, we can conclude that, in season 2009, players in age 27 and 28 have the highest average points. From age 20-29, the average point is in a increasing trend. From age 30-42, the average point is in a increasing trend. According to the second plot, we realize that, in season 2009, generally players with higher PER value will have higher average points. Few players have high PER but low average points because they have excellent defensive efforts. According to the third plot, we find out that number of 2 points made has a positve relationship with PER value in season 2009. 
 ```
 
-Conclusion
+
